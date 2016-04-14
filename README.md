@@ -113,7 +113,7 @@ For further reading, see:
  -  `GraphColor[g]` displays the graph *g* with edges and vertices colored
 	according to their equivalence. In particular, the edges 
 	*e<sub>1</sub>* and *e<sub>2</sub>* (respectively the vertices
-	*v<sub>1</sub>* and *v<sub>2</sub>*) will be coloed the same if
+	*v<sub>1</sub>* and *v<sub>2</sub>*) will be colored the same if
     *g-e<sub>1</sub>* and *g-e<sub>2</sub>* (respectively 
 	*g-v<sub>1</sub>* and *g-v<sub>2</sub>*) are isomorphic.
 

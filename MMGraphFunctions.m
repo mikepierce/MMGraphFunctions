@@ -4,8 +4,8 @@ BeginPackage["PierceMMPack`"]
 
 
 PierceMMPack::usage = "PierceMMPack: Mathematica package containing functions to aid in the search for minor-minimal graphs.
-Functions include: MMGraphQ, NonApexGraphQ, MMNAGraphQ, NonEdgeApexGraphQ, MMNEGraphQ, NonContractionApexGraphQ, MMNCGraphQ, EdgeContract, DeleteGraphDuplicates, \
-SimpleMinors, GraphSimplify, GraphConnectivity, GraphStandardEdgeList, GraphColor, GraphModel.
+Functions include: MMGraphQ, NonApexGraphQ, MMNAGraphQ, NonEdgeApexGraphQ, MMNEGraphQ, NonContractionApexGraphQ, MMNCGraphQ, \
+EdgeContract, DeleteGraphDuplicates, SimpleMinors, GraphSimplify, GraphColor, GraphModel.
 Constants include: K5, K33.";
 
 MMGraphQ::usage = "\!\(\*RowBox[{\"MMGraphQ \", \"[\", RowBox[{StyleBox[\"P\", \"TI\"], \",\", StyleBox[\"g\", \"TI\"]}], \"]\"}]\) \
@@ -69,20 +69,6 @@ simplifies a graph \
 \!\(\*StyleBox[\"g\", \"TI\"]\) \
 such that the result has no degree 0, 1, or 2 vertices. \n\
 GraphSimplify[] with no arguments will print an outline of the graph simplification algorithm.";
-
-GraphConnectivity::usage = "\!\(\*RowBox[{\"GraphConnectivity\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields the maximum \!\(\*StyleBox[\"n\", \"TI\"]\) such that \!\(\*StyleBox[\"g\", \"TI\"]\) is \!\(\*StyleBox[\"n\", \"TI\"]\)-connected.
-A graph is \!\(\*StyleBox[\"n\", \"TI\"]\)-connected if the removal of any \!\(\*StyleBox[\"n-1\", \"TI\"]\) vertices results in a connected graph.
-Relies on functions: DeleteGraphDuplicates.";
-If[$VersionNumber >= 10, GraphConnectivity::usage = "GraphConnectivity[] has been superseded by VertexConnectivity[] as of Mathematica 10.";];
-
-GraphStandardEdgeList::usage = "\!\(\*RowBox[{\"GraphStandardEdgeList\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-returns a clean (standard) edge list for \!\(\*StyleBox[\"g\", \"TI\"]\).
-\!\(\*RowBox[{\"GraphStandardEdgeList\", \"[\",StyleBox[\"g\", \"TI\"], \",\",StyleBox[\"True\",\"TI\"],\"]\"}]\) \
-returns a clean (standard) edge list for \!\(\*StyleBox[\"g\", \"TI\"]\) formatted as a list of vertex pairs.";
-If[$VersionNumber >= 10, GraphStandardEdgeList::usage = GraphStandardEdgeList::usage <> "
-Consider instead using the function CanonicalGraph[].";];
-GraphStandardEdgeList::arg2 = "A Boolean value was expected as the second argument.";
 
 GraphColor::usage = "\!\(\*RowBox[{\"GraphColor\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
 displays graph \!\(\*StyleBox[\"g\", \"TI\"]\) with edges and vertices colored according to their equivalence.";
@@ -227,41 +213,6 @@ GraphSimplify[GraphPristine_Graph] := Module[
   ];
 
   Return[G];
-];
-
-
-GraphConnectivity[G_Graph] := Module[
-  {graphset = {G}, n = 0},
-
-  If[IsomorphicGraphQ[G, CompleteGraph[VertexCount[G]]], Return[VertexCount[G] - 1]];
-
-  While[graphset != {} && !MemberQ[ConnectedGraphQ /@ graphset, False],
-    graphset = Flatten[Table[VertexDelete[#, i], {i, VertexList[#]}] & /@ DeleteGraphDuplicates[graphset]];
-    ++n;
-  ];
-  Return[n];
-];
-
-
-GraphStandardEdgeList[G_Graph,PairsQ_Symbol: False] := Module[{adjlist,done={}},
-  If[FreeQ[{True,False},PairsQ],Message[GraphStandardEdgeList::arg2];Return[$Failed]];
-  adjlist=List[#,Sort[AdjacencyList[G,#]]]&/@Union[Flatten[List@@@EdgeList@G]];
-  Do[
-    If[FreeQ[done,First[adjlist[[i]]]],
-      adjlist=Replace[adjlist,{First[adjlist[[i]]]->i,i->First[adjlist[[i]]]},3];
-      AppendTo[done,i];
-    ];
-    Do[
-      If[FreeQ[done,Last[adjlist[[i]]][[j]]],
-        adjlist=Replace[adjlist,{Last[adjlist[[i]]][[j]]->Last@done+1,Last@done+1->Last[adjlist[[i]]][[j]]},3];
-        AppendTo[done,Last@done+1];
-      ];
-    ,{j,Length[Last[adjlist[[i]]]]}];
-    adjlist=SortBy[adjlist,First];
-    If[done==First/@adjlist,Break[]];
-  ,{i,Length@adjlist}];
-
-  Return[If[PairsQ,List@@@#,#]&@Flatten[Table[UndirectedEdge[First@i,#]&/@Sort[Cases[Last@i,v_/;First@i<v]],{i,adjlist}]]];
 ];
 
 

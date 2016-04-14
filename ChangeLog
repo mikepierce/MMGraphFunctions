@@ -1,6 +1,11 @@
 
 12 Apr 2016
-    - Initial Commit
+    - Initial Commit.
 
+13 Apr 2016
+    - Removed the function GraphConnectivity because the built-in function VertexConnectivity should be used instead.
+    - Removed the function GraphStandardEdgeList because the built-in function
+    CanonicalGraph should be utilized instead.
+    - Thoroughly updated the README.
 
 

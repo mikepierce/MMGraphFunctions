@@ -82,7 +82,7 @@ For further reading, see:
 
     There are three specific implementations of this function.
     Firstly there is `MMNAGraphQ[g] := MMGraphQ[NonApexGraphQ, g]`.
-    There are also functions `MMNEGraphQ[g]` and `MMNCGraphQ[q]`, 
+    There are also functions `MMNEGraphQ[g]` and `MMNCGraphQ[g]`, 
 	but these have to defined differently because neither of the properties
     edge-apex or contraction-apex are closed under taking minors.
 
@@ -100,8 +100,8 @@ For further reading, see:
  -  `EdgeContract[g, e]` contracts the edge *e* in the graph *g*.
     Note that this function is built into Mathematica 10.
 
- -  `DeleteGraphDuplicates[{g1, g2, ..., gn}]` removes graphs 
-    that are duplicates under isomorphism from the list
+ -  `DeleteGraphDuplicates[{g1, g2, ..., gn}]` removes duplicate graphs 
+    (up to isomorphism) from the list
     *{g<sub>1</sub>, g<sub>2</sub>, &#8230;, g<sub>n</sub>}*.
 
  -  `GraphSimplify[g]` simplifies the graph *g* so that the result
@@ -118,7 +118,7 @@ For further reading, see:
 	*g-v<sub>1</sub>* and *g-v<sub>2</sub>*) are isomorphic.
 
  -  `GraphModel[g]` displays the graph *g* in various different layouts
-	edges and vertices colored with `GraphColor`.
+	with the edges and vertices colored with `GraphColor`.
 
 	`GraphModel[g, n]` displays *n* different layouts of *g* like above.
 

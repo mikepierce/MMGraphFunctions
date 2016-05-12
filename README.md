@@ -25,7 +25,7 @@ The classic example of this, preceding the
 Robertson&ndash;Seymour Theorem, is [Wagner's Theorem][WAGNER].
 According to Wagner's Theorem, a graph is [planar][PLANAR] if and only if
 it does not contain either *K<sub>5</sub>* or *K<sub>3,3</sub>* as a minor.
-Therefore two graphs *K<sub>5</sub>* or *K<sub>3,3</sub>* 
+Therefore the two graphs *K<sub>5</sub>* or *K<sub>3,3</sub>* 
 are the obstructions to graph planarity.
 
 This Mathematica package was created to help search for the 
@@ -54,7 +54,7 @@ For further reading, see:
   [WAGNER]: https://en.wikipedia.org/wiki/Wagner%27s_theorem
   [PLANAR]: https://en.wikipedia.org/wiki/Planar_graph
   [MPTHESIS]: http://www.csuchico.edu/~tmattman/mpthesis.pdf
-  [MPPRESENT]: http://math.ucr.edu/~mpierce/presentation.pdf
+  [MPPRESENT]: http://math.ucr.edu/~mpierce/files/pierce-2015-EOAGEAGCAG-presentation.pdf
   [KN5K321N]: http://arxiv.org/abs/1603.00885
 
 

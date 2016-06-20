@@ -6,7 +6,7 @@ related to finding the forbidden minors of a given graph property.
 In particular, this package has functions relating to the properties
 of a graph being [apex][APEX], edge-apex, or contraction-apex.
 
-  ![K6 and the Jorgenson Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
+  ![K6 and the Jorgensen Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
 
 According to the [Robertson&ndash;Seymour Theorem][RST],
 given any property of graphs *P* that is closed under taking [minors][MINOR]
@@ -61,8 +61,12 @@ For further reading, see:
 
 # Constants
 
-  This package contains the graphs *K<sub>5</sub>* (as `K5`) 
-  and *K<sub>3,3</sub>* (as `K33`) as constants.
+  This package contains the following graphs as constants:
+  
+  | Titles            | Stuff     | MOR |
+  | ----------------- | --------- | --- |
+  | *K<sub>5</sub>*   | (as `K5`) |     |
+  | *K<sub>3,3</sub>* | (`K33`)   | AAA |
 
 # Important Functions
 

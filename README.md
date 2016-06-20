@@ -5,6 +5,9 @@ A Mathematica package that contains functions
 related to finding the forbidden minors of a given graph property.
 In particular, this package has functions relating to the properties
 of a graph being [apex][APEX], edge-apex, or contraction-apex.
+Additionally in the *brute-force-search* directory
+is a Mathematica notebook containing the details how to perform 
+a brute-force search for certain classes of minor-minimal graphs.
 
   ![K6 and the Jorgensen Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
 

@@ -63,10 +63,13 @@ For further reading, see:
 
   This package contains the following graphs as constants:
   
-  | Titles            | Stuff     | MOR |
-  | ----------------- | --------- | --- |
-  | *K<sub>5</sub>*   | (as `K5`) |     |
-  | *K<sub>3,3</sub>* | (`K33`)   | AAA |
+  Name | Graph
+  ----:| :---
+  `K5` | *K<sub>5</sub>* , the complete graph on five vertices
+  `K6` | *K<sub>6</sub>* , the complete graph on six vertices
+  `K33`| *K<sub>3,3</sub>* , the complete bipartite graph on two sets of three vertices
+  `J1` | The J&oslash;rgensen Graph
+
 
 # Important Functions
 
@@ -81,8 +84,10 @@ For further reading, see:
     and a graph *g* and returns True if *g* is minor-minimal
     with respect to *P* and False otherwise.
     This function is defined pretty simply as 
-    
-        MMGraphQ[P, g] := Return[P[g] && !MemberQ[P /@ SimpleMinors[g], True]];
+   
+    ```Mathematica
+      MMGraphQ[P, g] := Return[P[g] && !MemberQ[P /@ SimpleMinors[g], True]];
+    ```
 
     There are three specific implementations of this function.
     Firstly there is `MMNAGraphQ[g] := MMGraphQ[NonApexGraphQ, g]`.

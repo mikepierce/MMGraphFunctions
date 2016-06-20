@@ -68,7 +68,8 @@ For further reading, see:
   `K5` | *K<sub>5</sub>* , the complete graph on five vertices
   `K6` | *K<sub>6</sub>* , the complete graph on six vertices
   `K33`| *K<sub>3,3</sub>* , the complete bipartite graph on two sets of three vertices
-  `J1` | The J&oslash;rgensen Graph
+  `J1` | The J&oslash;rgensen graph
+
 
 
 # Important Functions
@@ -79,18 +80,19 @@ For further reading, see:
     There are also functions `NonEdgeApexGraphQ[g]` 
     and `NonContractionApexGraphQ[g]` defined similarly.
 
- -  `MMGraphQ[P, g]` takes a graph property *P* 
+ -  `MMGraphQ[P,g]` takes a graph property *P* 
     such that *&not;P* is closed under taking minors
     and a graph *g* and returns True if *g* is minor-minimal
     with respect to *P* and False otherwise.
     This function is defined pretty simply as 
    
     ```Mathematica
-      MMGraphQ[P, g] := Return[P[g] && !MemberQ[P /@ SimpleMinors[g], True]];
+      MMGraphQ[P,g] := Return[P[g] && !MemberQ[P /@ SimpleMinors[g], True]];
     ```
 
     There are three specific implementations of this function.
-    Firstly there is `MMNAGraphQ[g] := MMGraphQ[NonApexGraphQ, g]`.
+    Firstly there is `MMNAGraphQ[g]` which is simply defined
+    as `MMGraphQ[NonApexGraphQ,g]`.
     There are also functions `MMNEGraphQ[g]` and `MMNCGraphQ[g]`, 
 	but these have to defined differently because neither of the properties
     edge-apex or contraction-apex are closed under taking minors.
@@ -101,17 +103,17 @@ For further reading, see:
     that are the result of either deleting an edge, 
     contracting an edge, or deleting a degree-*0* vertex in *g*.  
     
-    `SimpleMinors[g, n]` returns the distinct minors with a minimum
+    `SimpleMinors[g,n]` returns the distinct minors with a minimum
     vertex degree of *n*.
 
 # Supplementary Functions
 
- -  `EdgeContract[g, e]` contracts the edge *e* in the graph *g*.
+ -  `EdgeContract[g,e]` contracts the edge *e* in the graph *g*.
     Note that this function is built into Mathematica 10.
 
- -  `DeleteGraphDuplicates[{g1, g2, ..., gn}]` removes duplicate graphs 
+ -  `DeleteGraphDuplicates[{g1, ..., gn}]` removes duplicate graphs 
     (up to isomorphism) from the list
-    *{g<sub>1</sub>, g<sub>2</sub>, &#8230;, g<sub>n</sub>}*.
+    *{g<sub>1</sub>, &#8230;, g<sub>n</sub>}*.
 
  -  `GraphSimplify[g]` simplifies the graph *g* so that the result
     will have no degree-*0*, -*1*, or -*2* vertices.
@@ -129,17 +131,16 @@ For further reading, see:
  -  `GraphModel[g]` displays the graph *g* in various different layouts
 	with the edges and vertices colored with `GraphColor`.
 
-	`GraphModel[g, n]` displays *n* different layouts of *g* like above.
+	`GraphModel[g,n]` displays *n* different layouts of *g* like above.
 
    
 
 # ToDo
  
- -  Change the documentation in the package to be more clear and match the README.
- -  Add any of the many relevant functions that I have to this package.
- -  Change `DeleteGraphDuplicates` so that it runs in O(nlg(n)) and preserves order.
- -  Have some kind of code review done. See if any of the functions can be made more efficient.
-    Ask if there is some better way (that I don't already know) to organize a Mathematica package.
+ -  Add a citation to the README and to the Brute-Force-Search.nb
+    as soon as that paper actually gets published.
+ -  Add any of the other relevant function that I have in scratch notebooks
+    to this package.
  -  Be open to suggestions/recommendations/requests.
 
 

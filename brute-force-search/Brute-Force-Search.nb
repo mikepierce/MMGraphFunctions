@@ -1,0 +1,314 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12633,        305]
+NotebookOptionsPosition[     12095,        283]
+NotebookOutlinePosition[     12429,        298]
+CellTagsIndexPosition[     12386,        295]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Brute-Force Search", "Section",
+ CellChangeTimes->{{3.6753021102958803`*^9, 3.6753021309413958`*^9}, {
+  3.675307800080763*^9, 3.675307800175109*^9}}],
+
+Cell[TextData[{
+ "This notebook will outline the procedure used to conduct a brute-force for \
+MMNA, MMNE, and MMNC graphs as described in the paper ",
+ StyleBox["Six Variations on a Theme: Almost Planar Graphs",
+  FontSlant->"Italic"],
+ " [1]. First we need the tools ",
+ StyleBox["geng",
+  FontFamily->"Courier"],
+ ", ",
+ StyleBox["planarg",
+  FontFamily->"Courier"],
+ ", and ",
+ StyleBox["showg",
+  FontFamily->"Courier"],
+ ", which are included in the ",
+ StyleBox["nauty and Traces",
+  FontSlant->"Italic"],
+ " graph theory software [2]. This software can be download from their \
+website and then compiled. Next we need to compile the utility ",
+ StyleBox["geng2mathematica",
+  FontFamily->"Courier"],
+ " written in C++ which can be found in the same directory as this notebook. \
+This is just a simple utility to convert the output of ",
+ StyleBox["showg",
+  FontFamily->"Courier"],
+ " to a format that ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " can easily understand.\n\nOnce we have these three utiltities, the \
+following code will produce the list of graphs that were checked to be either \
+MMNE or MMNC in a format that can be easily read by ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ ".\n\n",
+ StyleBox["    $ for i in {6..9}; do\n        geng -c -d2 ${i} | planarg -v | \
+showg -e | ./geng2mathematica > ${i}v.txt\n        done\n    $ for i in \
+{10..16}; do\n        geng -c -d2 ${i} 0:17 | planarg -v | showg -e | \
+./geng2mathematica > ${i}v,0-17e.txt\n        geng -c -d2 ${i} 18   | planarg \
+-v | showg -e | ./geng2mathematica > ${i}v,18e.txt\n        geng -c -d2 ${i} \
+19   | planarg -v | showg -e | ./geng2mathematica > ${i}v,19e.txt\n        \
+done",
+  FontFamily->"Courier"],
+ "\n  \nMuch of this graph production can be automated with the included bash \
+shell script ",
+ StyleBox["runner.sh",
+  FontFamily->"Courier"],
+ ". For the sake of demonstration, we will run through the procedure with the \
+file ",
+ StyleBox["10v,18e.txt",
+  FontFamily->"Courier"],
+ " (which is included in the same directory as this notebook) consisting of \
+all non-planar connected graphs of minimum vertex degree two with 10 vertices \
+and 18 edges. This file contains about a 200,000 graphs. First we need to put \
+",
+ StyleBox["MMGraphFunctions.m",
+  FontFamily->"Courier"],
+ " somewhere in our ",
+ StyleBox["$Path",
+  FontFamily->"Courier"],
+ " (the current notebook directory will do) and then load the package in this \
+notebook:\n"
+}], "Text",
+ CellChangeTimes->{{3.6753021446795597`*^9, 3.67530215529239*^9}, {
+   3.6753024544195023`*^9, 3.675302458233026*^9}, {3.675307762016488*^9, 
+   3.675307865653142*^9}, {3.675308512186205*^9, 3.675308514776896*^9}, {
+   3.6753087256430902`*^9, 3.6753087875395803`*^9}, {3.675309030027079*^9, 
+   3.6753090493540173`*^9}, {3.675309082074069*^9, 3.675309159614743*^9}, {
+   3.675311219274441*^9, 3.6753112328152857`*^9}, {3.675311269061339*^9, 
+   3.675311314491211*^9}, {3.6753113869556293`*^9, 3.6753114719540977`*^9}, {
+   3.675311504480175*^9, 3.675311511291144*^9}, {3.675312445175707*^9, 
+   3.675312447829911*^9}, {3.67531250850356*^9, 3.675312637749666*^9}, {
+   3.675312864555604*^9, 3.6753129936646423`*^9}, {3.675383741536562*^9, 
+   3.6753838089418488`*^9}, {3.675383879467231*^9, 3.675383880913443*^9}, {
+   3.675383965354377*^9, 3.675383988496097*^9}, {3.675384072418372*^9, 
+   3.6753840727737837`*^9}, {3.6753841477066*^9, 3.675384227550856*^9}, {
+   3.675384366394479*^9, 3.675384367983397*^9}, {3.6753844321689157`*^9, 
+   3.675384464495626*^9}, {3.6753844996548967`*^9, 3.675384500439208*^9}, {
+   3.675384796055382*^9, 3.67538502576855*^9}, {3.675385560167479*^9, 
+   3.6753855882174473`*^9}, {3.675385729257677*^9, 3.675385734173211*^9}, {
+   3.675385847343804*^9, 3.6753858706483793`*^9}, {3.675386008249197*^9, 
+   3.6753860472683067`*^9}, {3.675386398922351*^9, 3.675386427799611*^9}, {
+   3.675386491615097*^9, 3.675386515226372*^9}, 3.675386588929076*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetDirectory", "@", 
+   RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"<<", "\"\<MMGraphFunctions`\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"?", "MMGraphFunctions"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.675302208786788*^9, 3.6753022526120033`*^9}, 
+   3.675302406939295*^9, {3.675302516583602*^9, 3.675302521143531*^9}, {
+   3.6753850508121567`*^9, 3.6753850601780167`*^9}, {3.675386299246529*^9, 
+   3.67538629968988*^9}, 3.675386585493978*^9}],
+
+Cell[TextData[{
+ "After loading the package we define a function ",
+ StyleBox["MMNEMMNCSearch",
+  FontFamily->"Courier"],
+ " that will read a given files of graphs, check if each one of them is \
+either MMNE or MMNC, and then record any found graphs into log files.\n"
+}], "Text",
+ CellChangeTimes->{{3.6753865711465397`*^9, 3.6753865871814413`*^9}, {
+  3.675386725095813*^9, 3.6753867821447678`*^9}, {3.675387095637501*^9, 
+  3.675387099193801*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"MMNEMMNCSearch", "[", "file_String", "]"}], ":=", 
+    RowBox[{"Module", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "edgelistlist", ",", "edgelist", ",", "mmnelog", ",", "mmnclog", ",", 
+        "total", ",", "tmpbar", ",", "g", ",", "i"}], "}"}], ",", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Print", "[", 
+        RowBox[{
+         RowBox[{"DateString", "[", "]"}], ",", "\"\<, Reading \>\"", ",", 
+         "file"}], "]"}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "Read", " ", "in", " ", "the", " ", "list", " ", "of", " ", 
+         "graphs"}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"edgelistlist", "=", 
+        RowBox[{"ReadList", "[", "file", "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "Create", " ", "logfiles", " ", "to", " ", "store", " ", "the", " ", 
+         "found", " ", "MMNE", " ", "and", " ", "MMNC", " ", "graphs"}], " ", 
+        "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"mmnelog", "=", 
+        RowBox[{"OpenWrite", "[", 
+         RowBox[{"\"\<mmne-winners-\>\"", "<>", "file"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"mmnclog", "=", 
+        RowBox[{"OpenWrite", "[", 
+         RowBox[{"\"\<mmnc-winners-\>\"", "<>", "file"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{"Display", " ", "nice", " ", "progress", " ", "bar"}], " ", 
+        "*)"}], " ", "\[IndentingNewLine]", 
+       RowBox[{"total", "=", 
+        RowBox[{"Length", "@", "edgelistlist"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"tmpbar", "=", 
+        RowBox[{"Print", "[", 
+         RowBox[{
+          RowBox[{"Dynamic", "[", "i", "]"}], ",", "\"\< \>\"", ",", 
+          RowBox[{"ProgressIndicator", "[", 
+           RowBox[{"Dynamic", "[", 
+            RowBox[{"i", "/", "total"}], "]"}], "]"}], ",", "\"\< \>\"", ",", 
+          "total"}], "]"}]}], ";", "\[IndentingNewLine]", 
+       "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "Loop", " ", "over", " ", "the", " ", "list", " ", "of", " ", 
+         "graphs", " ", "to", " ", "check", " ", "them"}], " ", "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"edgelist", "=", 
+           RowBox[{"edgelistlist", "[", 
+            RowBox[{"[", "i", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"g", "=", 
+           RowBox[{"Graph", "[", 
+            RowBox[{"UndirectedEdge", "@@@", "edgelist"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"MMNEGraphQ", "@", "g"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Write", "[", 
+               RowBox[{"mmnelog", ",", "edgelist"}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Print", "[", 
+               RowBox[{"\"\<MMNE: \>\"", ",", "edgelist"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"MMNCGraphQ", "@", "g"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Write", "[", 
+               RowBox[{"mmnclog", ",", "edgelist"}], "]"}], ";", 
+              "\[IndentingNewLine]", 
+              RowBox[{"Print", "[", 
+               RowBox[{"\"\<MMNC: \>\"", ",", "edgelist"}], "]"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "total"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"(*", " ", "Cleanup", " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"Print", "[", 
+        RowBox[{
+         RowBox[{"DateString", "[", "]"}], ",", "\"\<, Completed \>\"", ",", 
+         "file"}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Close", "[", "mmnelog", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Close", "[", "mmnclog", "]"}], ";"}]}], "\[IndentingNewLine]",
+      "]"}]}], ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.6753090606809673`*^9, 3.675309061546742*^9}, 
+   3.6753865677613497`*^9, {3.675386619068316*^9, 3.675386714825261*^9}, {
+   3.675386785460758*^9, 3.675386809544766*^9}, {3.675386854789774*^9, 
+   3.675386909207816*^9}, {3.675386944112163*^9, 3.675386977918043*^9}, {
+   3.67538702451344*^9, 3.67538708061615*^9}}],
+
+Cell["\<\
+Now we can simply call this function and note the results printed out and the \
+log files created. Running the following search on my own laptop took about \
+one hour and resulted in finding 1 MMNE graph and 8 MMNC graphs.
+\
+\>", "Text",
+ CellChangeTimes->{{3.675387122751317*^9, 3.67538715238284*^9}, {
+  3.675391058766446*^9, 3.67539110332051*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MMNEMMNCSearch", "[", "\"\<10v,18e.txt\>\"", "]"}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.6753871543143063`*^9, 3.675387197023673*^9}}],
+
+Cell[TextData[{
+ "\n[1]: ",
+ StyleBox[" Six Variations on a Theme: Almost Planar Graphs",
+  FontSlant->"Italic"],
+ ", \n        Lipton, Mackall, Mattman, Pierce, Robertson, and Weinschelbaum;\
+\n        (publication under review) \n        \n[2]:  B.D. McKay and A. \
+Piperno. ",
+ StyleBox["Practical Graph Isomorphism, ",
+  FontSlant->"Italic"],
+ "II. \n        ",
+ StyleBox["J. Symbolic Computation",
+  FontSlant->"Italic"],
+ " ",
+ StyleBox["60",
+  FontWeight->"Bold"],
+ " (2014) 94-112,\n        ",
+ StyleBox["Nauty and Traces",
+  FontSlant->"Italic"],
+ " Available for Download at ",
+ ButtonBox["http://pallini.di.uniroma1.it/",
+  BaseStyle->"Hyperlink",
+  ButtonData->{
+    URL["http://pallini.di.uniroma1.it/"], None},
+  ButtonNote->"http://pallini.di.uniroma1.it/"],
+ "\n        "
+}], "Text",
+ CellChangeTimes->{{3.675384230680903*^9, 3.675384353098771*^9}, {
+   3.675384385721636*^9, 3.67538441379986*^9}, 3.675384455152261*^9, {
+   3.6753850969518337`*^9, 3.675385112027041*^9}, {3.675385157433435*^9, 
+   3.6753852976780233`*^9}, 3.675387216327681*^9}]
+}, Open  ]]
+},
+WindowSize->{1336, 685},
+WindowMargins->{{5, Automatic}, {4, Automatic}},
+FrontEndVersion->"10.1 for Linux x86 (64-bit) (March 23, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 156, 2, 67, "Section"],
+Cell[739, 26, 3957, 81, 432, "Text"],
+Cell[4699, 109, 556, 10, 99, "Input"],
+Cell[5258, 121, 450, 9, 71, "Text"],
+Cell[5711, 132, 4745, 102, 803, "Input"],
+Cell[10459, 236, 360, 7, 70, "Text"],
+Cell[10822, 245, 192, 4, 55, "Input"],
+Cell[11017, 251, 1062, 29, 188, "Text"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

@@ -1,124 +1,79 @@
 (* ::Package:: *)
 
-BeginPackage["PierceMMPack`"]
+BeginPackage["MMGraphFunctions`"]
 
 
-PierceMMPack::usage = "PierceMMPack: Mathematica package containing functions to aid in the search for minor-minimal graphs.
-Functions include: MMGraphQ, NonApexGraphQ, MMNAGraphQ, NonEdgeApexGraphQ, MMNEGraphQ, NonContractionApexGraphQ, MMNCGraphQ, \
-EdgeContract, DeleteGraphDuplicates, SimpleMinors, GraphSimplify, GraphColor, GraphModel.
-Constants include: K5, K33.";
+MMGraphFunctions::usage = "MMGraphFunctions: A Mathematica package containing\
+  functions to aid in the search for minor-minimal graphs given a certain property.
 
-MMGraphQ::usage = "\!\(\*RowBox[{\"MMGraphQ \", \"[\", RowBox[{StyleBox[\"P\", \"TI\"], \",\", StyleBox[\"g\", \"TI\"]}], \"]\"}]\) \
-given a graph property \!\(\*StyleBox[\"P\", \"TI\"]\) such that \!\(\*StyleBox[\"\[Not]P\", \"TI\"]\) is closed under taking minors, \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is minor-minimal with respect to \!\(\*StyleBox[\"P\", \"TI\"]\) and False otherwise.
-For example, MMGraphQ[NonApexGraphQ, CompleteGraph[6]] returns True.
-Relies on functions: SimpleMinors";
+Functions include: MMGraphQ, NonApexGraphQ, MMNAGraphQ, NonEdgeApexGraphQ,\
+MMNEGraphQ, NonContractionApexGraphQ, MMNCGraphQ, EdgeContract,\
+DeleteGraphDuplicates, SimpleMinors, GraphSimplify, GraphColor, GraphModel.
 
-NonApexGraphQ::usage = "\!\(\*RowBox[{\"NonApexGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is non-apex and False otherwise.";
+Constants include: K5, K33, K6, J1.";
 
-MMNAGraphQ::usage = "\!\(\*RowBox[{\"MMNAGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is minor-minimal non-apex and False otherwise.
-Relies on functions: NonApexGraphQ, MMGraphQ";
 
-NonEdgeApexGraphQ::usage = "\!\(\*RowBox[{\"NonEdgeApexGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is non-edge-apex and False otherwise.";
-
-MMNEGraphQ::usage = "\!\(\*RowBox[{\"MMNEGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is minor-minimal non-edge-apex and False otherwise. \
-Since edge-apexness is not closed under taking minors, \
-this function may take some time to verify that a given graph is minor-minimal non-edge-apex.
-Relies on functions: NonEdgeApexGraphQ, MMGraphQ";
-
-NonContractionApexGraphQ::usage="\!\(\*RowBox[{\"NonContractionApexGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is non-contraction-apex and False otherwise.";
-
-MMNCGraphQ::usage="\!\(\*RowBox[{\"MMNCGraphQ\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-yields True if \!\(\*StyleBox[\"g\", \"TI\"]\) is minor-minimal non-contraction-apex and False otherwise. \
-Since contraction-apexness is not closed under taking minors, \
-this function may take some time to verify that a given graph is minor-minimal non-contraction-apex.
-Relies on functions: NonContractionApexGraphQ, MMGraphQ";
-
-If[$VersionNumber < 10,
-EdgeContract::usage = "\!\(\*RowBox[{\"EdgeContract \", \"[\", RowBox[{StyleBox[\"g\", \"TI\"], \",\", StyleBox[\"e\", \"TI\"]}], \"]\"}]\) \
-makes a graph by contracting the edge \!\(\*StyleBox[\"e\", \"TI\"]\) in the graph \!\(\*StyleBox[\"g\", \"TI\"]\).";
+(* The complete graph on five vertices *)
+K5 = Graph[UndirectedEdge @@@ Subsets[Range@5, {2}], 
+        {VertexSize -> Medium, VertexStyle -> Black, EdgeStyle -> Black}
 ];
 
-DeleteGraphDuplicates::usage = "\!\(\*RowBox[{\"DeleteGraphDuplicates\", \"[\", \
-RowBox[{SubscriptBox[StyleBox[\"{g\", \"TI\"], StyleBox[\"1\", \"TR\"]], \
-\",\", \
-SubscriptBox[StyleBox[\"g\", \"TI\"], StyleBox[\"2\", \"TR\"]], \
-\", ... ,\", \
-SubscriptBox[StyleBox[\"g\", \"TI\"], StyleBox[\"n\", \"TR\"]],\"}\"}], \"]\"}]\) removes graphs that are duplicates under isomorphism from \
-\!\(\*RowBox[{ \
-RowBox[{SubscriptBox[StyleBox[\"{g\", \"TI\"], StyleBox[\"1\", \"TR\"]], \
-\",\", \
-SubscriptBox[StyleBox[\"g\", \"TI\"], StyleBox[\"2\", \"TR\"]], \
-\", ... ,\", \
-SubscriptBox[StyleBox[\"g\", \"TI\"], StyleBox[\"n\", \"TR\"]],\"}\"}]}]\).";
+(* The complete bipartite graph with two set of three vertices each *)
+K33 = Graph[UndirectedEdge @@@ Tuples[{{1, 2, 3}, {4, 5, 6}}], 
+        {VertexSize -> Medium, VertexStyle -> Black, EdgeStyle -> Black}
+];
 
-SimpleMinors::usage = "\!\(\*RowBox[{\"SimpleMinors\", \"[\",StyleBox[\"g\", \"TI\"],\"]\"}]\) \
-returns the list of all simple minors of \!\(\*StyleBox[\"g\", \"TI\"]\).
-\!\(\*RowBox[{\"SimpleMinors \", \"[\", RowBox[{StyleBox[\"g\", \"TI\"], \",\", StyleBox[\"n\", \"TI\"]}], \"]\"}]\) \
-returns the list of all simple minors of \!\(\*StyleBox[\"g\", \"TI\"]\) with a minimum vertex degree of \!\(\*StyleBox[\"n\", \"TI\"]\) .
-We define a simple minor to be the result of either contracting a single edge, deleting a single edge, or deleting a degree-0 vertex.
-Relies on functions: EdgeContract";
+(* The complete graph on six vertices *)
+K6 = Graph[UndirectedEdge @@@ Subsets[Range@6, {2}], 
+        {VertexSize -> Medium, VertexStyle -> Black, EdgeStyle -> Black}
+];
 
-GraphSimplify::usage = "\!\(\*RowBox[{\"GraphSimplify\", \"[\",StyleBox[\"g\", \"TI\"],\"]\"}]\) \
-simplifies a graph \
-\!\(\*StyleBox[\"g\", \"TI\"]\) \
-such that the result has no degree 0, 1, or 2 vertices. \n\
-GraphSimplify[] with no arguments will print an outline of the graph simplification algorithm.";
-
-GraphColor::usage = "\!\(\*RowBox[{\"GraphColor\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-displays graph \!\(\*StyleBox[\"g\", \"TI\"]\) with edges and vertices colored according to their equivalence.";
-
-GraphModel::usage = "\!\(\*RowBox[{\"GraphModel\", \"[\",StyleBox[\"g\", \"TI\"], \"]\"}]\) \
-displays graph \!\(\*StyleBox[\"g\", \"TI\"]\) in various different layouts \
-with edges and vertices colored according to their equivalence.
-\!\(\*RowBox[{\"GraphModel\", \"[\",StyleBox[\"g\", \"TI\"], \",\",StyleBox[\"n\",\"TI\"],\"]\"}]\) \
-displays \!\(\*StyleBox[\"n\", \"TI\"]\) instances of graph \!\(\*StyleBox[\"g\", \"TI\"]\) in various different layouts \
-with edges and vertices colored according to their equivalence.
-Relies on functions: GraphColor.";
+(* The Jorgensen Graph *)
+J1 = Graph[UndirectedEdge @@@ {{1,4},{1,5},{1,6},
+    {1,7},{1,8},{2,3},{2,5},{2,6},{2,7},{2,8},{3,4},{3,6},
+    {3,7},{3,8},{4,5},{4,7},{4,8},{5,7},{5,8},{6,7},{6,8}},
+        {VertexSize -> Medium, VertexStyle -> Black, EdgeStyle -> Black}
+];
 
 
-
-
-
-
-
-Begin["`Private`"]
-
-K5 = Graph[
-   UndirectedEdge @@@ Subsets[Range@5, {2}], {VertexSize -> Medium, 
-    VertexStyle -> Black, EdgeStyle -> Black}];
-
-K33 = Graph[
-   UndirectedEdge @@@ 
-    Tuples[{{1, 2, 3}, {4, 5, 6}}], {VertexSize -> Medium, 
-    VertexStyle -> Black, EdgeStyle -> Black}]; 
-
-
+MMGraphQ::usage = "MMGraphQ[P, g] takes a graph property P such that \[Not]P \
+is closed under taking minors and a graph g and returns True if g \
+is minor-minimal with respect to P and False otherwise.";
 
 MMGraphQ[F_Symbol, G_Graph] := Module[{},
   Return[F[G] && ! MemberQ[F /@ SimpleMinors[G], True]];
 ];
 
 
+NonApexGraphQ::usage = "NonApexGraphQ[g] takes a graph g and yields True \
+if g is non-apex and False otherwise.";
+
 NonApexGraphQ[G_Graph] := Module[{},
   Return[! MemberQ[PlanarGraphQ[VertexDelete[G, #]] & /@ VertexList[G], True]];
 ];
 
+
+MMNAGraphQ::usage = "MMNAGraphQ[g] takes a graph g and yields True \
+if g is minor-minimal on-apex and False otherwise.";
 
 MMNAGraphQ[G_Graph] := Module[{},
   Return[MMGraphQ[NonApexGraphQ, G]];
 ];
 
 
+NonEdgeApexGraphQ::usage = "NonEdgeApexGraphQ[g] takes a graph g and yields True \
+if g is non-edge-apex and False otherwise.";
+
 NonEdgeApexGraphQ[G_Graph] := Module[{},
   Return[! MemberQ[PlanarGraphQ[EdgeDelete[G, #]] & /@ EdgeList[G], True]];
 ];
 
+
+MMNEGraphQ::usage = "MMNEGraphQ[g] takes a graph g and yields True \
+if g is minor-minimal non-edge-apex and False otherwise. \
+Since edge-apexness is not closed under taking minors, \
+this function may take some time to verify that a given graph \
+is minor-minimal non-edge-apex.";
 
 MMNEGraphQ[G_Graph] := Module[{sieve},
   If[!MMGraphQ[NonEdgeApexGraphQ, G], Return@False];
@@ -132,10 +87,19 @@ MMNEGraphQ[G_Graph] := Module[{sieve},
 ];
 
 
+NonContractionApexGraphQ::usage = "NonContractionApexGraphQ[g] takes a graph g \
+and yields True if g is non-contraction-apex and False otherwise.";
+
 NonContractionApexGraphQ[G_Graph] := Module[{},
   Return[! MemberQ[PlanarGraphQ[EdgeContract[G, #]] & /@ EdgeList[G], True]];
 ];
 
+
+MMNCGraphQ::usage = "MMNCGraphQ[g] takes a graph g and yields True \
+if g is minor-minimal non-contraction-apex and False otherwise. \
+Since contraction-apexness is not closed under taking minors, \
+this function may take some time to verify that a given graph \
+is minor-minimal non-contraction-apex.";
 
 MMNCGraphQ[G_Graph] := Module[{sieve},
   If[!MMGraphQ[NonContractionApexGraphQ, G], Return@False];
@@ -149,20 +113,38 @@ MMNCGraphQ[G_Graph] := Module[{sieve},
 ];
 
 
+(* As of Mathematica 10, this is a built-in function *)
 If[$VersionNumber < 10,
+
+  EdgeContract::usage = "EdgeContract[g, e] contracts \
+  the edge e of the graph g.";
+
   EdgeContract[G_Graph, E_UndirectedEdge] := Module[
     {v1 = Min[E[[1]], E[[2]]], v2 = Max[E[[1]], E[[2]]], graph = EdgeDelete[G, E], edges},
     (*  Get edges of v2 that need to be transferred.  *)
     edges = UndirectedEdge[Min[v1, #], Max[v1, #]] & /@ Complement[AdjacencyList[graph, v2], AdjacencyList[graph, v1]];
     Return[VertexDelete[EdgeAdd[graph, edges], v2]];
   ];
+
 ];
 
+
+DeleteGraphDuplicates::usage = "DeleteGraphDuplicates[{g1, \[Ellipsis], gn}] removes \
+duplicate graphs (up to isomorphism) from the list {g1, \[Ellipsis], gn}.";
 
 DeleteGraphDuplicates[G_List] := Module[{},
   Return[DeleteDuplicates[G, IsomorphicGraphQ[#1, #2] &]];
 ];
 
+
+SimpleMinors::usage = "SimpleMinors[g] takes a graph g \
+and returns a list of the simple minors of g. \
+Specifically it returns a list of all distinct graphs \
+that are the result of either deleting an edge, contracting an edge, \
+or deleting a degree-0 vertex in g.
+
+SimpleMinors[g,n] returns the distinct minors \
+with a minimum vertex degree of n.";
 
 SimpleMinors[G_Graph, n_Integer: 0] := Module[
   {vertices, edges, vertexremovals = {}, edgeremovals = {}, edgecontractions = {}},
@@ -177,6 +159,11 @@ SimpleMinors[G_Graph, n_Integer: 0] := Module[
   Return[DeleteCases[Join[vertexremovals, edgeremovals, edgecontractions], g_ /; Min[VertexDegree[g]] < n]];
 ];
 
+
+GraphSimplify::usage = "GraphSimplify[g] simplifies the graph g \
+so that the result will have no degree-0, -1, or -2 vertices.
+
+GraphSimplify[] will print an outline of the graph simplification algorithm.";
 
 GraphSimplify[] := Module[{},
   Print[
@@ -216,6 +203,12 @@ GraphSimplify[GraphPristine_Graph] := Module[
 ];
 
 
+GraphColor::usage = "GraphColor[g] displays the graph g \
+with edges and vertices colored according to their equivalence. \
+In particular, the edges e1 and e2 (respectively the vertices v1 and v2) \
+will be colored the same if g-e1 and g-e2 (respectively g-v1 and g-v2) \
+are isomorphic.";
+
 GraphColor[G_Graph] := Module[{vertices, edges, vertexcolors, edgecolors, colorproperties},
   vertices = Sort[Gather[VertexList[G], IsomorphicGraphQ[VertexDelete[G, #1], VertexDelete[G, #2]] &], Length[#1] > Length[#2] &];
   edges = Sort[Gather[EdgeList[G], IsomorphicGraphQ[EdgeDelete[G, #1], EdgeDelete[G, #2]] &], Position[vertices, First[List @@ Flatten[#1]]] > Position[vertices, First[List @@ Flatten[#2]]] &];
@@ -230,6 +223,12 @@ GraphColor[G_Graph] := Module[{vertices, edges, vertexcolors, edgecolors, colorp
 ];
 
 
+GraphModel::usage = "GraphModel[g] displays the graph g \
+in various different layouts with the edges and vertices \
+colored with GraphColor.
+
+GraphModel[g,n] displays n different layouts of g like above.";
+
 GraphModel[G_Graph, N_Integer:20] := Module[{H},
   H = RemoveProperty[G, {GraphHighlight, GraphHighlightStyle, GraphLayout, GraphStyle, EdgeShapeFunction, EdgeStyle, VertexCoordinates,
       VertexShapeFunction, VertexShape, VertexSize, VertexStyle}];
@@ -237,5 +236,4 @@ GraphModel[G_Graph, N_Integer:20] := Module[{H},
  ];
 
 
-End[ ]
 EndPackage[ ]

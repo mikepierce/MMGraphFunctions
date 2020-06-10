@@ -43,13 +43,13 @@ they are still worthwhile to search for.
 
 For further reading, see:
 
- - [Six variations on a theme: almost planar graphs](https://msp.org/involve/2018/11-3/p03.xhtml)
+- [Six variations on a theme: almost planar graphs](https://msp.org/involve/2018/11-3/p03.xhtml)
     <br>Lipton, Mackall, Mattman, Pierce, Robinson, Thomas, and Weinschelbaum
     <br>Involve, a Journal of Mathematics 11-3 (2018), 413–448. 
- - [The *K<sub>n+5</sub>* and *K<sub>3<sup>2</sup>,1<sup>n</sup></sub>* families are obstructions to *n*-apex](https://doi.org/10.1090/conm/689)
+- [The *K<sub>n+5</sub>* and *K<sub>3<sup>2</sup>,1<sup>n</sup></sub>* families are obstructions to *n*-apex](https://doi.org/10.1090/conm/689)
     <br>Thomas W Mattman and Mike Pierce
     <br>Appears in Contemporary Mathematics 689; 2017 
- -[Classifying the Finite Set of Minor-Minimal Non-Apex Graphs](http://www.csuchico.edu/~tmattman/mpthesis.pdf)
+- [Classifying the Finite Set of Minor-Minimal Non-Apex Graphs](http://www.csuchico.edu/~tmattman/mpthesis.pdf)
     <br>Mike Pierce, supervised by Dr Thomas Mattman;
     <br>CSU Chico Honors Thesis in Mathematics, 2014
 

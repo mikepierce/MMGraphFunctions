@@ -11,16 +11,6 @@ is a Mathematica notebook containing the details how to perform
 a brute-force search for certain classes of minor-minimal graphs.
 This package was used to arrive at the results in these papers:
 
- - [Six variations on a theme: almost planar graphs](https://msp.org/involve/2018/11-3/p03.xhtml)
-    <br>Max Lipton, Eoin Mackall, Thomas W. Mattman, Mike Pierce, Samantha Robinson, Jeremy Thomas and Ilan Weinschelbaum
-    <br>Involve, a Journal of Mathematics 11-3 (2018), 413–448. 
- - [The Kn+5 and K32 ,1n families are obstructions to n-apex](https://doi.org/10.1090/conm/689)
-    <br>Thomas W. Mattman, Mike Pierce
-    <br>Appears in Contemporary Mathematics 689; 2017 
-  -[Classifying the Finite Set of Minor-Minimal Non-Apex Graphs](http://www.csuchico.edu/~tmattman/mpthesis.pdf)
-    <br>Mike Pierce, supervised by Dr.~Thomas Mattman;
-    <br>CSU Chico Honors Thesis in Mathematics, 2014
-
 ![K6 and the Jorgensen Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
 
 According to the [Robertson&ndash;Seymour Theorem][RST],
@@ -53,25 +43,21 @@ they are still worthwhile to search for.
 
 For further reading, see:
 
- -  *Searching for and Classifying the Finite Set
-	of Minor-Minimal Non-Apex Graphs*, Pierce ([pdf][MPTHESIS])
- -  *Six Variations on a Theme: Almost Planar Graphs*, 
-	Lipton, Mackall, Mattman, Pierce, Robertson, and Weinschelbaum 
-	(publication under review)
- -  *Examples of Obstructions to Apex Graphs,
-	Edge-Apex Graphs, and Contraction-Apex Graphs*, Pierce ([pdf][MPPRESENT])
- -  *The* K<sub>n+5</sub> *and* K<sub>3<sup>2</sup>,1<sup>n</sup></sub>
-	*families are obstructions to n-apex*, Mattman and Pierce ([arXiv][KN5K321N])
+ - [Six variations on a theme: almost planar graphs](https://msp.org/involve/2018/11-3/p03.xhtml)
+    <br>Lipton, Mackall, Mattman, Pierce, Robinson, Thomas, and Weinschelbaum
+    <br>Involve, a Journal of Mathematics 11-3 (2018), 413–448. 
+ - [The *K<sub>n+5</sub>* and *K<sub>3<sup>2</sup>,1<sup>n</sup></sub>* families are obstructions to *n*-apex](https://doi.org/10.1090/conm/689)
+    <br>Thomas W Mattman and Mike Pierce
+    <br>Appears in Contemporary Mathematics 689; 2017 
+ -[Classifying the Finite Set of Minor-Minimal Non-Apex Graphs](http://www.csuchico.edu/~tmattman/mpthesis.pdf)
+    <br>Mike Pierce, supervised by Dr Thomas Mattman;
+    <br>CSU Chico Honors Thesis in Mathematics, 2014
 
-  [APEX]: https://en.wikipedia.org/wiki/Apex_graph
-  [RST]: https://en.wikipedia.org/wiki/Robertson%E2%80%93Seymour_theorem  
-  [MINOR]: https://en.wikipedia.org/wiki/Graph_minor
-  [WAGNER]: https://en.wikipedia.org/wiki/Wagner%27s_theorem
-  [PLANAR]: https://en.wikipedia.org/wiki/Planar_graph
-  [MPTHESIS]: http://www.csuchico.edu/~tmattman/mpthesis.pdf
-  [MPPRESENT]: http://math.ucr.edu/~mpierce/files/pierce-2015-EOAGEAGCAG-presentation.pdf
-  [KN5K321N]: http://arxiv.org/abs/1603.00885
-
+[APEX]: https://en.wikipedia.org/wiki/Apex_graph
+[RST]: https://en.wikipedia.org/wiki/Robertson%E2%80%93Seymour_theorem  
+[MINOR]: https://en.wikipedia.org/wiki/Graph_minor
+[WAGNER]: https://en.wikipedia.org/wiki/Wagner%27s_theorem
+[PLANAR]: https://en.wikipedia.org/wiki/Planar_graph
 
 
 # Constants

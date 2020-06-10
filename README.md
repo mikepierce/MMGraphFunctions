@@ -1,5 +1,6 @@
-
 # Minor-Minimal Graph Functions
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Mathematica package that contains functions 
 related to finding the forbidden minors of a given graph property.
@@ -8,8 +9,19 @@ of a graph being [apex][APEX], edge-apex, or contraction-apex.
 Additionally in the *brute-force-search* directory
 is a Mathematica notebook containing the details how to perform 
 a brute-force search for certain classes of minor-minimal graphs.
+This package was used to arrive at the results in these papers:
 
-  ![K6 and the Jorgensen Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
+ - [Six variations on a theme: almost planar graphs](https://msp.org/involve/2018/11-3/p03.xhtml)
+    <br>Max Lipton, Eoin Mackall, Thomas W. Mattman, Mike Pierce, Samantha Robinson, Jeremy Thomas and Ilan Weinschelbaum
+    <br>Involve, a Journal of Mathematics 11-3 (2018), 413–448. 
+ - [The Kn+5 and K32 ,1n families are obstructions to n-apex](https://doi.org/10.1090/conm/689)
+    <br>Thomas W. Mattman, Mike Pierce
+    <br>Appears in Contemporary Mathematics 689; 2017 
+  -[Classifying the Finite Set of Minor-Minimal Non-Apex Graphs](http://www.csuchico.edu/~tmattman/mpthesis.pdf)
+    <br>Mike Pierce, supervised by Dr.~Thomas Mattman;
+    <br>CSU Chico Honors Thesis in Mathematics, 2014
+
+![K6 and the Jorgensen Graph](https://raw.githubusercontent.com/mikepierce/MMGraphFunctions/master/images/k6andjorgenson.png)
 
 According to the [Robertson&ndash;Seymour Theorem][RST],
 given any property of graphs *P* that is closed under taking [minors][MINOR]
@@ -135,15 +147,4 @@ For further reading, see:
 	with the edges and vertices colored with `GraphColor`.
 
 	`GraphModel[g,n]` displays *n* different layouts of *g* like above.
-
-   
-
-# ToDo
- 
- -  Add a citation to the README and to the Brute-Force-Search.nb
-    as soon as that paper actually gets published.
- -  Add any of the other relevant function that I have in scratch notebooks
-    to this package.
- -  Be open to suggestions/recommendations/requests.
-
 
